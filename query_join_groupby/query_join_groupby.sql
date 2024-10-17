@@ -49,13 +49,28 @@ WHERE `departments`.`name` = "Dipartimento di Matematica" --non giusta da rivede
 --QUERY GROUP BY
 
 -- 1. Contare quanti iscritti ci sono stati ogni anno
-
+SELECT `students`.`enrolment_date`, COUNT(*)
+FROM `students`
+GROUP BY `enrolment_date`;
 
 -- 2. Contare gli insegnanti che hanno l'ufficio nello stesso edificio
-
+SELECT COUNT(*), `teachers`.`office_address` as `indirizzo`
+FROM `teachers`
+JOIN `degrees` ON `degrees`.`department_id` = `departments`.`id`
+JOIN `courses` ON `courses`.`degree_id` = `degrees`.`id`
+JOIN `course_teacher` ON `course_teacher`.`course_id` = `courses`.`id`
+JOIN `teachers` ON `course_teacher`.`teacher_id` = `teachers`.`id`
+WHERE `teachers`.`office_address` = `departments`.`address`
+GROUP BY `indirizzo`; --non funziona
 
 -- 3. Calcolare la media dei voti di ogni appello d'esame
-
+SELECT AVG(`vote`) as `average_vote`, `exam_id` 
+FROM `exam_student`
+GROUP BY `exam_id`  
+ORDER BY `average_vote` DESC;
 
 -- 4. Contare quanti corsi di laurea ci sono per ogni dipartimento
-
+SELECT COUNT(`degrees`.`name`), `degrees`.`name`
+FROM `departments`
+JOIN `degrees` ON `departments`.`id` = `degrees`.`department_id`
+GROUP BY `degrees`.`name`;
