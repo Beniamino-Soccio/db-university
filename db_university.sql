@@ -13,6 +13,12 @@ SELECT *
 FROM `students`
 WHERE YEAR(`date_of_birth`) < 1994-10-16;
 
+SELECT * 
+FROM `students`
+WHERE DateDiff(YEAR, `date_of_birth`, CURRENT_DATE() ) > 30; 
+
+
+
 --Selezionare tutti i corsi del primo semestre del primo anno di un qualsiasi corso di laurea (286)
 SELECT * 
 FROM `courses`
@@ -27,7 +33,7 @@ WHERE DATE(`date`) = "2020-06-20";--79
 SELECT *
 FROM `exams`
 WHERE DATE(`date`) = "2020-06-20"
-AND HOUR(`hour`) > "14:00:00";--14 (sbagliata)
+AND HOUR(`hour`) >= "14:00:00";
 
 --Selezionare tutti i corsi di laurea magistrale (38)
 SELECT * 
@@ -39,7 +45,7 @@ SELECT COUNT(*)
 FROM `departments`;
 
 --Quanti sono gli insegnanti che non hanno un numero di telefono? (50)
-SELECT * 
+SELECT COUNT(*) 
 FROM `teachers` 
 WHERE `phone` IS NULL;
 
@@ -48,9 +54,10 @@ INSERT INTO `students` (`id`, `degree_id`, `name`, `surname`, `date_of_birth`, `
 VALUES ('5001', '29', 'Beniamino', 'Soccio', '1998-12-24', 'DAJE1234DAJE5678', '2020-02-18', '999999', 'dajedaje@gmail.com')
 
 --Cambiare il numero dell’ufficio del professor Pietro Rizzo in 126
-SELECT `office_number` 
-FROM `teachers` 
-WHERE REPLACE('125', '5', '6'); --(sicuramente sbagliata)
+UPDATE `TEACHERS`
+SET `office_number` = 126
+WHERE `name` = "Pietro"
+AND `surname`= "Rizzo";
 
 --Eliminare dalla tabella studenti il record creato precedentemente al punto 9
 DELETE FROM students 
